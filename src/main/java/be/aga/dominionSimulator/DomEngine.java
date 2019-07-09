@@ -12,7 +12,9 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -310,13 +312,17 @@ public class DomEngine {
 		return currentGame;
 	}
 
+    public void startSimulation( List<DomPlayer> thePlayers, boolean keepOrder, int aNumber, boolean aShowLog ) {
+        startSimulation(thePlayers, keepOrder, aNumber, aShowLog, new HashMap<String, DomPlayerStat>());
+    }
+	
 	/**
      * @param thePlayers
      * @param keepOrder 
      * @param aNumber 
      * @param aShowLog 
      */
-    public void startSimulation( List<DomPlayer> thePlayers, boolean keepOrder, int aNumber, boolean aShowLog ) {
+    public void startSimulation( List<DomPlayer> thePlayers, boolean keepOrder, int aNumber, boolean aShowLog, Map<String, DomPlayerStat> playerTotalMap) {
         emptyPilesEndingCount=0;
         NUMBER_OF_GAMES = aNumber;
      	myLog = new StringBuilder();
@@ -355,6 +361,7 @@ public class DomEngine {
 //            LOGGER.info("Board: "+ theBoard);
 //            LOGGER.info(players.get(0) + " : "+ players.get(0).getDeck());
 //            LOGGER.info(players.get(1) + " : "+ players.get(1).getDeck());
+            thePlayers.stream().forEach(p -> updatePlayerGameTotals(p, aNumber, playerTotalMap));
             theBoard.reset();
             boardResetTime += System.currentTimeMillis()-theTime;
         }
@@ -369,6 +376,16 @@ public class DomEngine {
         printResults();
         if (!haveToLog) 
           showCharts();
+    }
+    
+    private void updatePlayerGameTotals(DomPlayer player, int games, Map<String, DomPlayerStat> playerTotalMap) {
+        final String key = player.getName();
+        DomPlayerStat playerStats = playerTotalMap.get(key); 
+        if (playerStats == null) {
+            playerStats = new DomPlayerStat(key);
+            playerTotalMap.put(key, playerStats);
+        }
+        playerStats.updateGameStats(player, 1);
     }
 
 	private void writeEndOfGameLog(DomGame theGame) {
