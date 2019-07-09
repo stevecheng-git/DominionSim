@@ -52,6 +52,7 @@ public class DomPlayer extends Observable implements Comparable<DomPlayer> {
     protected DomGame game;
     private int wins = 0;
     private double ties = 0;
+    private int games = 0;
     private ArrayList<Integer> moneyCurve = new ArrayList<Integer>();
     private ArrayList<Integer> VPcurve = new ArrayList<Integer>();
     private int turns = 0;
@@ -1683,6 +1684,10 @@ public class DomPlayer extends Observable implements Comparable<DomPlayer> {
         return wins;
     }
 
+    public void addWins(int wins) {
+        this.wins += wins;
+    }
+    
     /**
      * @return
      */
@@ -4438,5 +4443,13 @@ public class DomPlayer extends Observable implements Comparable<DomPlayer> {
 
     public int countVillagers() {
         return villagers;
+    }
+
+    public int getGames() {
+        return games;
+    }
+
+    public void setGames(int games) {
+        this.games = games;
     }
 }

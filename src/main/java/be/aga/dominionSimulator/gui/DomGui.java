@@ -52,11 +52,12 @@ import javax.swing.SwingUtilities;
 import org.jfree.ui.RefineryUtilities;
 import org.xml.sax.InputSource;
 
+import be.aga.dominionSimulator.Dom;
 import be.aga.dominionSimulator.DomEngine;
 import be.aga.dominionSimulator.DomPlayer;
 import be.aga.dominionSimulator.gui.util.KingdomViewer;
 
-public class DomGui extends JFrame implements ActionListener {
+public class DomGui extends JFrame implements ActionListener, Dom {
     /**
      * 
      */
@@ -81,6 +82,10 @@ public class DomGui extends JFrame implements ActionListener {
   private JSplitPane myBigSplit;
   private JSplitPane myBottomSplit;
   private HashMap<DomPlayer, JButton> myPlayers = new HashMap<DomPlayer, JButton>();
+
+
+    // For automated headless mode ONLY 
+    DomGui() {}
 
     public DomGui(DomEngine anEngine)	{
       myEngine=anEngine;
